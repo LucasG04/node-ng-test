@@ -6,25 +6,23 @@ FROM ubuntu:latest
 # use bash as shell
 SHELL ["/bin/bash", "-c"]
 
-RUN touch ~/.bashrc && chmod +x ~/.bashrc
-
-# add proxy to apt and install packages
+# Install packages
 RUN apt update && \
    apt install -y build-essential wget curl git rsync unzip && \
    git config --global http.sslVerify false
 
-# Install nvm and node
+# Install node, install npm and configure npm
 RUN echo "insecure" >> ~/.curlrc && \
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash && \
-    . ~/.nvm/nvm.sh && \
-    nvm install 18 && \
-    nvm use 18 && \
-    source ~/.bashrc && \
+    apt install nodejs npm -y && \
     node -v && \
     npm -v && \
     npm set strict-ssl false && \
     npm set progress false && \
     npm set audit false
+
+# Install n
+RUN npm install -g n && \
+    n latest
 
 # Download chrome and install required packages
 RUN cd /opt && \
