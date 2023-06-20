@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - README.md
+      - .github/workflows/update-docker-description.yml
 
 jobs:
   update-dockerhub-description:
@@ -17,5 +20,5 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: lucasg04/node-ng-test
-          description: |
-            $(cat README.md)
+          short-description: ${{ github.event.repository.description }}
+          enable-url-completion: true
